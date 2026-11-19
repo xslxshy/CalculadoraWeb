@@ -24,7 +24,7 @@ class UsuarioServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // Testa se o mét odo retorna corretamente a contagem de usuários
+    //Testa se o metodo retorna corretamente a contagem de usuários
     @Test
     void testGetCountUsers() {
         when(usuarioRepo.count()).thenReturn(42L);
@@ -33,7 +33,7 @@ class UsuarioServiceTest {
         verify(usuarioRepo).count();
     }
 
-    // Testa o fluxo de salvar um novo usuário a partir do DTO
+    //Testa o fluxo de salvar um novo usuário a partir do DTO
     @Test
     void testSaveUsuario() {
         UserDTO dto = new UserDTO();

@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-// Aplica o mock customizado de usuário autenticado para todos os métodos
+
+//Aplica o mock customizado de usuário autenticado para todos os métodos
 class RankingControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -29,12 +30,12 @@ class RankingControllerTest {
     @MockBean
     private PartidaService partidaService;
 
-    // Testa view ranking com lista não-vazia
-    @WithMockCustomUser(username = "testuser", nome = "Fulano Teste")
+    //Testa view ranking com LISTA NÃO VAZIA
+    @WithMockCustomUser(username = "testuser", nome = "Teste")
     @Test
     void testRankingViewComLista() throws Exception {
         br.edu.calc.plus.domain.dto.RankingDTO ranking = new br.edu.calc.plus.domain.dto.RankingDTO();
-        // Preencha campos do RankingDTO conforme necessário para a view
+
         java.util.List<br.edu.calc.plus.domain.dto.RankingDTO> lista = java.util.Collections.singletonList(ranking);
         when(partidaService.getRanking()).thenReturn(lista);
 
@@ -44,8 +45,8 @@ class RankingControllerTest {
                 .andExpect(view().name("ranking"));
     }
 
-    // Testa view ranking com lista vazia
-    @WithMockCustomUser(username = "testuser", nome = "Fulano Teste")
+    //Testa view ranking com LISTA VAZIA
+    @WithMockCustomUser(username = "testuser", nome = "User Teste")
     @Test
     void testRankingViewListaVazia() throws Exception {
         when(partidaService.getRanking()).thenReturn(java.util.Collections.emptyList());
@@ -55,12 +56,9 @@ class RankingControllerTest {
                 .andExpect(view().name("ranking"));
     }
 
-    // Testa se rota requer autenticação: se DEVE proteger, deixe o teste; senão, remova.
-    // Se a rota for pública, esse teste pode ser desnecessário!
+    //Testa se rota requer autenticação
     @Test
     void testRankingRequiresAuthentication() throws Exception {
-        // Para simular acesso SEM estar autenticado, remova @WithMockCustomUser desse teste (caso override global)
-        // E aguarde status de redirecionamento
         mockMvc.perform(get("/ranking"))
                 .andExpect(status().is3xxRedirection());
     }

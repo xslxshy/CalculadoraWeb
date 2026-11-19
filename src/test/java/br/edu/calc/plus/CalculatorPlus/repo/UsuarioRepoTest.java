@@ -17,7 +17,7 @@ class UsuarioRepoTest {
     @Autowired
     private UsuarioRepo usuarioRepo;
 
-    // Utilitário para criar um novo usuário
+    //Utilitário para criar um novo usuário
     private Usuario novoUsuario() {
         return new Usuario(
                 null,
@@ -30,7 +30,7 @@ class UsuarioRepoTest {
         );
     }
 
-    // Testa a busca por nome com sucesso
+    //Testa a busca por nome dando certo
     @Test
     void testFindByNome() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
@@ -39,7 +39,7 @@ class UsuarioRepoTest {
         assertEquals(usuario.getLogin(), encontrado.get().getLogin());
     }
 
-    // Testa a busca por login com sucesso
+    //Testa a busca por login dando certo
     @Test
     void testFindByLogin() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
@@ -48,14 +48,14 @@ class UsuarioRepoTest {
         assertEquals(usuario.getNome(), encontrado.get().getNome());
     }
 
-    // Testa a busca por nome que não existe
+    //Testa a busca por nome inexistente
     @Test
     void testFindByNomeNotFound() {
         Optional<Usuario> encontrado = usuarioRepo.findByNome("NomeInexistente");
         assertFalse(encontrado.isPresent());
     }
 
-    // Testa a busca por login que não existe
+    //Testa a busca por login inexistente
     @Test
     void testFindByLoginNotFound() {
         Optional<Usuario> encontrado = usuarioRepo.findByLogin("loginInexistente");

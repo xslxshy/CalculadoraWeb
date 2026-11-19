@@ -7,6 +7,7 @@ import br.edu.calc.plus.repo.UsuarioRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class CompeticaoControllerIntegrationTest {
@@ -42,13 +44,13 @@ class CompeticaoControllerIntegrationTest {
 
     @Test
     void testIniciarNovaCompeticaoIntegration() throws Exception {
-        // Salva usuário no banco e captura o id gerado
+        //Salva o usuário no banco e pega o id que foi gerado
         Usuario usuario = usuarioRepo.save(new Usuario(null, "Jogador Integracao", "intUser03", "integration3@teste.com", "Senha@123", "Cidade", LocalDate.of(1995,1,1)));
         Integer idGerado = usuario.getId();
 
-        // Cria UserLogado (principal) com ID correto e insere no SecurityContext
+        //Cria UserLogado com ID correto e insere no SecurityContext
         UserLogado userLogado = new UserLogado(
-                idGerado, // sincronizado com o banco
+                idGerado, //sync com banco
                 usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getLogin(),
@@ -63,7 +65,7 @@ class CompeticaoControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("jogar"));
 
-        // Valida que a partida foi criada vinculada ao ID correto
+        //Valida que a partida foi criada vinculada ao ID certo
         var partidas = partidaRepo.findByUsuarioId(idGerado);
         assertFalse(partidas.isEmpty());
     }

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PartidaTest {
 
-    // Testa total de acertos em jogos da partida
+    //Testa total de acertos em jogos da partida
     @Test
     void testGetAcertos() {
         Partida partida = new Partida();
@@ -22,7 +22,7 @@ class PartidaTest {
         assertEquals(1, partida.getAcertos());
     }
 
-    // Testa total de erros em jogos da partida
+    //Testa total de erros em jogos da partida
     @Test
     void testGetErros() {
         Partida partida = new Partida();
@@ -32,7 +32,7 @@ class PartidaTest {
         assertEquals(1, partida.getErros());
     }
 
-    // Testa mét odo addBonus, incrementando o valor de bonificação
+    //Testa metodo addBonus incrementando o valor de bonificação
     @Test
     void testAddBonus() {
         Partida partida = new Partida();
@@ -41,7 +41,7 @@ class PartidaTest {
         assertEquals(15.0, partida.getBonificacao());
     }
 
-    // Testa mét odo removeBonus, decrementando o valor de bonificação
+    //Testa metodo removeBonus, decrementando o valor de bonificação
     @Test
     void testRemoveBonus() {
         Partida partida = new Partida();
@@ -50,15 +50,15 @@ class PartidaTest {
         assertEquals(5.0, partida.getBonificacao());
     }
 
-    // Testa métodos equals e hashCode baseados no id
+    //Testa os metodos equals e hashCode com base no id
     @Test
     void testEqualsAndHashCode() {
         Partida p1 = new Partida(1, LocalDateTime.now(), 10.0, 20);
         Partida p2 = new Partida(1, LocalDateTime.now(), 15.0, 25);
         Partida p3 = new Partida(2, LocalDateTime.now(), 10.0, 20);
 
-        assertEquals(p1, p2); // mesmo id, objetos iguais
-        assertNotEquals(p1, p3); // id diferente
+        assertEquals(p1, p2); //mesmo id objetos iguais
+        assertNotEquals(p1, p3); //id diferente
         assertEquals(p1.hashCode(), p2.hashCode());
     }
 

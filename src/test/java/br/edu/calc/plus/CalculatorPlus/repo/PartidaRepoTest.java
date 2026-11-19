@@ -23,12 +23,12 @@ class PartidaRepoTest {
     @Autowired
     private UsuarioRepo usuarioRepo;
 
-    // Cria usuário novo para testes
+    //Usuário novo pra testes
     private Usuario novoUsuario() {
         return new Usuario(null, "Nome", "login123", "email@teste.com", "Senha@123", "Cidade", LocalDate.of(2000, 1, 1));
     }
 
-    // Testa soma de todas as bonificações
+    //Testa soma de todas as bonificações
     @Test
     void testGetAllBonus() {
         Usuario user = usuarioRepo.save(novoUsuario());
@@ -42,7 +42,7 @@ class PartidaRepoTest {
         assertEquals(30.0, bonus);
     }
 
-    // Testa busca por usuário via ID
+    //Testa busca por usuário via ID
     @Test
     void testFindByUsuarioId() {
         Usuario user = usuarioRepo.save(novoUsuario());
@@ -54,7 +54,7 @@ class PartidaRepoTest {
         assertEquals(user.getId(), partidas.get(0).getUsuario().getId());
     }
 
-    // Testa contagem de competições do usuário entre datas indicadas
+    //Testa contagem de competições do usuário entre datas indicadas
     @Test
     void testGetUsuarioCompetil() {
         Usuario user = usuarioRepo.save(novoUsuario());
@@ -66,7 +66,7 @@ class PartidaRepoTest {
         assertEquals(1L, count);
     }
 
-    // Testa busca de partida por ID e usuário
+    //Testa busca de partida por ID e usuário
     @Test
     void testFindByIdAndUsuarioId() {
         Usuario user = usuarioRepo.save(novoUsuario());
@@ -77,7 +77,7 @@ class PartidaRepoTest {
         assertNotNull(encontrado);
     }
 
-    // Testa retorno do ranking com soma de bonificações e demais dados
+    //Testa retorno do ranking com soma de bonificações e demais dados
     @Test
     void testGetRanking() {
         Usuario user = usuarioRepo.save(novoUsuario());

@@ -10,10 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,12 +30,18 @@ class JogoServiceTest {
     @InjectMocks
     private JogoService jogoService;
 
+    private static class RandomFixo extends Random {
+        @Override public int nextInt(int bound) { return bound == 4 ? 0 : 10; }
+        @Override public double nextDouble() { return 0.5; }
+    }
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        ReflectionTestUtils.setField(jogoService, "rand", new RandomFixo());
     }
 
-    // Testa se o serviço retorna o valor formatado do total de erros
+    //Testa se o serviço retorna o valor formatado do total de erros
     @Test
     void testGetAllErros() {
         when(jogoRepo.getAllErros()).thenReturn(1234L);
@@ -40,7 +49,7 @@ class JogoServiceTest {
         assertNotNull(result);
     }
 
-    // Testa se retorna corretamente o total de acertos
+    //Testa se retorna certo a quantidade total de acertos
     @Test
     void testGetAllAcertos() {
         when(jogoRepo.getAllAcertos()).thenReturn(5678L);
@@ -48,7 +57,7 @@ class JogoServiceTest {
         assertEquals(5678L, result);
     }
 
-    // Testa se retorna a lista de acertos dos últimos 10 dias corretamente
+    //Testa se retorna a lista de acertos dos últimos 10 dias
     @Test
     void testGetAcertosUltimos10Dias() {
         when(jogoRepo.getAcertosDia(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(4L);
@@ -57,7 +66,7 @@ class JogoServiceTest {
         for (long v : valores) assertEquals(4L, v);
     }
 
-    // Testa se retorna a lista de erros dos últimos 10 dias corretamente
+    //Testa se retorna a lista de erros dos últimos 10 dias
     @Test
     void testGetErrosUltimos10Dias() {
         when(jogoRepo.getErrosDia(any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(2L);
@@ -66,17 +75,17 @@ class JogoServiceTest {
         for (long v : valores) assertEquals(2L, v);
     }
 
-    // Testa o cálculo de bônus inicial usando operador e id de usuário
+    //Testa o cálculo de bônus inicial usando operador e id de usuário
     @Test
     void testBonusInicial() {
-        // Para garantir que bonusUsuario retorne valor mínimo (mockando repo)
+        //Garantir que bonusUsuario retorne valor mínimo mockando repo
         when(jogoRepo.getAllAcertosUser(anyInt())).thenReturn(0L);
         BigDecimal bonus = jogoService.bonusInicial(EOperator.soma, 1);
         assertNotNull(bonus);
         assertTrue(bonus.doubleValue() > 0);
     }
 
-    // Testa geração de lista aleatória de jogos
+    //Testa geração de lista aleatória de jogos
     @Test
     void testCriarJogosAleatorio() {
         when(jogoRepo.getAllAcertosUser(anyInt())).thenReturn(0L);

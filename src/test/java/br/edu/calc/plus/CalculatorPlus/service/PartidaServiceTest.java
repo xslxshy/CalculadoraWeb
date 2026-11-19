@@ -44,16 +44,15 @@ class PartidaServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // Testa se o serviço retorna o valor formatado do prêmio
+    //Testa se o serviço retorna o valor formatado do prêmio
     @Test
     void testGetPremioUsers() {
         when(partidaRepo.getAllBonus()).thenReturn(150.0);
         String result = partidaService.getPremioUsers();
         assertNotNull(result);
-        // Aqui você pode ajustar conforme o mét odo Util.formatarMoeda retorna
     }
 
-    // Testa mét odo que retorna lista de jogos do usuário
+    //Testa metodo que retorna lista de jogos do usuário
     @Test
     void testGetMeusJogos() {
         Partida partida = new Partida();
@@ -73,7 +72,7 @@ class PartidaServiceTest {
         assertEquals(1, jogos.size());
     }
 
-    // Testa se detecta que o usuário já competiu hoje
+    //Testa deteccao de se o usuário já competiu hoje
     @Test
     void testUserJaCompetiuHoje() {
         when(partidaRepo.getUsuarioCompetil(anyInt(), any(), any())).thenReturn(1L);
@@ -81,7 +80,7 @@ class PartidaServiceTest {
         assertTrue(result);
     }
 
-    // Testa a inicialização de uma partida
+    //Testa o início de uma partida
     @Test
     void testIniciarPartida() throws Exception {
         Usuario usuario = new Usuario();
@@ -95,7 +94,7 @@ class PartidaServiceTest {
         assertEquals(usuario, partida.getUsuario());
     }
 
-    // Testa salvar a partida após uma jogada
+    //Testa salvar a partida depois de jogar
     @Test
     void testSavePartida() throws Exception {
         Partida partida = new Partida();
@@ -112,7 +111,7 @@ class PartidaServiceTest {
         assertNotNull(result);
     }
 
-    // Testa a finalização de uma partida
+    //Testa finalização de uma partida
     @Test
     void testFinalizaPartida() throws Exception {
         Partida partida = new Partida();
@@ -128,7 +127,7 @@ class PartidaServiceTest {
         assertNotNull(result);
     }
 
-    // Testa recuperação de partida
+    //Testa recuperação de uma partida
     @Test
     void testGetPartida() throws Exception {
         Partida partida = new Partida();
@@ -139,7 +138,7 @@ class PartidaServiceTest {
         assertEquals(1, result.getId());
     }
 
-    // Testa o mét odo de ranking
+    //Testa o metodo de ranking
     @Test
     void testGetRanking() {
         RankingDTO dto = new RankingDTO();

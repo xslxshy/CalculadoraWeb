@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.time.LocalDate;
 
@@ -26,10 +27,10 @@ public class UsuarioControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // Testa cadastro válido via POST /user (formulário padrão da aplicação)
+    //Testa cadastro válido via POST /user
     @Test
     void testSaveUserValido() throws Exception {
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user").with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("nome", "Teste")
                         .param("login", "test123")
@@ -42,19 +43,19 @@ public class UsuarioControllerTest {
                 .andExpect(flash().attributeExists("success"));
     }
 
-    // Testa cenário de erro de validação de formulário (ex.: campos ausentes)
+    //Testa cenário de erro de validação de formulário
     @Test
     void testSaveUserErroValidacao() throws Exception {
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user").with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("login", "test123")
                         .param("senha", "Senha@123")
                         .param("nascimento", LocalDate.of(2000,1,1).toString()))
-                .andExpect(status().isOk()) // View 'cadastro' deve ser reexibida
+                .andExpect(status().isOk()) //View de cadastro deve ser reexibida
                 .andExpect(result -> result.getModelAndView().getViewName().equals("cadastro"));
     }
 
-    // GET /user — deve retornar a view 'cadastro' e objeto 'usuario' no model
+    //GET /user -> deve retornar a view de cadastro e de objeto usuario no model
     @Test
     void testExibirFormularioCadastro() throws Exception {
         mockMvc.perform(get("/user"))
@@ -63,7 +64,7 @@ public class UsuarioControllerTest {
                 .andExpect(view().name("cadastro"));
     }
 
-    // Acesso a rota protegida (exemplo: /perfil) sem login — deve redirecionar para login
+    //Acesso a rota protegida sem login —> deve redirecionar para login
     @Test
     void testAcessoProtegidoSemLogin() throws Exception {
         mockMvc.perform(get("/ranking"))
@@ -71,7 +72,7 @@ public class UsuarioControllerTest {
                 .andExpect(redirectedUrlPattern("**/login"));
     }
 
-    // Testa o fluxo de logout (POST ou GET, dependendo do seu controller)
+    //Testa o fluxo de logout
     @Test
     void testLogout() throws Exception {
         mockMvc.perform(post("/logout"))
@@ -79,11 +80,10 @@ public class UsuarioControllerTest {
                 .andExpect(redirectedUrl("/home"));
     }
 
-    // Tamanho mínimo/máximo dos campos
-    // teste falha por conta de um problema no DTO que não valida o tamanho do texto no backend
+    //Tamanho mínimo/máximo dos campos
     @Test
     void testCadastroLoginComTamanhoInvalido() throws Exception {
-        mockMvc.perform(post("/user")
+        mockMvc.perform(post("/user").with(csrf())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("nome", "Teste")
                         .param("login", "aa") // muito curto
@@ -95,5 +95,4 @@ public class UsuarioControllerTest {
                 .andExpect(model().attributeHasFieldErrors("usuario", "login"))
                 .andExpect(view().name("cadastro"));
     }
-
 }

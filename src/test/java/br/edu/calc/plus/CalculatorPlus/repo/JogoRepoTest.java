@@ -25,7 +25,7 @@ class JogoRepoTest {
     @Autowired
     private UsuarioRepo usuarioRepo;
 
-    // Cria um novo usuário com dados válidos
+    //Cria novo usuário com dados válidos
     private Usuario novoUsuario() {
         return new Usuario(
                 null,
@@ -38,38 +38,38 @@ class JogoRepoTest {
         );
     }
 
-    // Cria uma nova partida associada ao usuário
+    //Cria nova partida associada ao usuário
     private Partida novaPartida(Usuario usuario) {
         Partida partida = new Partida(null, LocalDateTime.now(), 10.0, 60);
         partida.setUsuario(usuario);
         return partida;
     }
 
-    // Testa a contagem de erros em jogos (resultado diferente da resposta)
+    //Testa contagem de erros em jogos
     @Test
     void testGetAllErros() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
         Partida partida = partidaRepo.save(novaPartida(usuario));
         Jogo jogo = new Jogo(null, 2, 2, EOperator.soma, 4, 99, 0);
-        jogo.setResposta(10); // erro
+        jogo.setResposta(10);
         jogo.setPartida(partida);
         jogoRepo.save(jogo);
         assertEquals(1, jogoRepo.getAllErros());
     }
 
-    // Testa a contagem de acertos em jogos (resultado igual à resposta)
+    //Testa a contagem de acertos em jogos
     @Test
     void testGetAllAcertos() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
         Partida partida = partidaRepo.save(novaPartida(usuario));
         Jogo jogo = new Jogo(null, 2, 2, EOperator.soma, 4, 99, 0);
-        jogo.setResposta(4); // acerto
+        jogo.setResposta(4);
         jogo.setPartida(partida);
         jogoRepo.save(jogo);
         assertEquals(1, jogoRepo.getAllAcertos());
     }
 
-    // Testa o total de acertos registrados em um dia específico
+    //Testa o total de acertos registrados em um dia específico
     @Test
     void testGetAcertosDia() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
@@ -84,7 +84,7 @@ class JogoRepoTest {
         assertEquals(1, jogoRepo.getAcertosDia(ini, fim));
     }
 
-    // Testa o total de erros registrados em um dia específico
+    //Testa o total de erros registrados em um dia específico
     @Test
     void testGetErrosDia() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
@@ -99,7 +99,7 @@ class JogoRepoTest {
         assertEquals(1, jogoRepo.getErrosDia(ini, fim));
     }
 
-    // Testa a contagem total de acertos de um usuário específico
+    //Testa a contagem total de acertos de um usuário específico
     @Test
     void testGetAllAcertosUser() {
         Usuario usuario = usuarioRepo.save(novoUsuario());
